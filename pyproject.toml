@@ -1,36 +1,31 @@
 [tool.poetry]
-name = "resume-analyzer"
+name = "ai_assistant_for_disabled"
 version = "0.1.0"
-description = ""
+description = "AI assistant for disabled people using image input and audio response"
 authors = ["Subash Basnet <subash.basnet0123@gmail.com>"]
-license = "MIT"
 readme = "README.md"
+packages = [{ include = "app" }]
+
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.13"
 flashtext = "^2.7"
 SpeechRecognition ="3.10.0"
 PTL = "^0.3.0"
-
+transformers = "^4.41.2"
 
 nltk = "^3.9.1"
 python-docx = "^1.1.2"
 beautifulsoup4 = "^4.12.3"
 contractions = "^0.1.73"
-numpy = "1.26.4"
 poetry = "^1.8.4"
-spacy = "3.7.4"
-pandas = "^2.2.3"
-scikit-learn = "1.2.2"
-scipy = "1.10.1"
 flask = "^3.1.0"
-sentence-transformers = "^3.3.1"
-gensim = "^4.3.3"
-flair = "^0.14.0"
-pdfplumber = "^0.11.4"
-fuzzywuzzy = "^0.18.0"
-python-levenshtein = "^0.26.1"
-
+torch = "^2.3.0"
+Pillow = "^10.3.0"
+flask = "^3.0.3"
+flask-cors = "^4.0.0"
+gtts = "^2.5.1"
+opencv-python = "^4.9.0.80"
 
 [build-system]
 requires = ["poetry-core"]
