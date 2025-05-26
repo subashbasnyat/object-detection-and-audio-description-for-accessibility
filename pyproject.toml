@@ -2,9 +2,9 @@
 name = "ai_assistant_for_disabled"
 version = "0.1.0"
 description = "AI assistant for disabled people using image input and audio response"
-authors = ["Subash Basnet <subash.basnet0123@gmail.com>"]
+authors = ["Subash Basnet <subash.basnet0123@gmail.com>", "Dipendra Shrestha"]
 readme = "README.md"
-packages = [{ include = "app" }]
+packages = [{ include = "main" }]
 
 
 [tool.poetry.dependencies]
