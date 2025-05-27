@@ -1,17 +1,12 @@
 from transformers import AutoModelForCausalLM, AutoTokenizer
 import torch
-from config import MODEL_NAME
-
-model_name = "microsoft/phi-2"
-
-tokenizer = AutoTokenizer.from_pretrained(model_name)
-model = AutoModelForCausalLM.from_pretrained(model_name)
+from config import LLM_MODEL_NAME
 
 
 def load_model():
     print("Loading LLM...")
-    tokenizer = AutoTokenizer.from_pretrained(model_name)
-    model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch.float16)
+    tokenizer = AutoTokenizer.from_pretrained(LLM_MODEL_NAME)
+    model = AutoModelForCausalLM.from_pretrained(LLM_MODEL_NAME, torch_dtype=torch.float16)
     return tokenizer, model
 
 def query_model(tokenizer, model, prompt):
