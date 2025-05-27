@@ -1,0 +1,136 @@
+<!-- <!doctype html>
+<html lang="en">
+  <head>
+    <title>AI Assistant</title>
+  </head>
+  <body>
+    <h2>Upload your image</h2>
+    <form action="/" method="post" enctype="multipart/form-data">
+      <input type="file" name="image"><br><br>
+      <input type="submit" value="Submit">
+    </form>
+    {% if response %}
+      <h3>Response:</h3>
+      <p>{{ response }}</p>
+      <audio controls>
+        <source src="{{ url_for('static', filename='response.mp3') }}" type="audio/mp3">
+      </audio>
+    {% endif %}
+  </body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Assistant for Disabled Users</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* Reset and base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(120deg, #e0f7fa, #f1f8e9);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            color: #00796b;
+        }
+
+        p {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            color: #555;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-align: left;
+            color: #444;
+        }
+
+        input[type="file"] {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 2px dashed #80cbc4;
+            border-radius: 8px;
+            background-color: #f0f0f0;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button {
+            background-color: #00796b;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #004d40;
+        }
+
+        .footer {
+            margin-top: 30px;
+            font-size: 0.9rem;
+            color: #777;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>AI Assistant for Accessibility</h1>
+        <p>Upload an image to receive an audio description using our intelligent assistant.</p>
+
+        <form action="/upload" method="POST" enctype="multipart/form-data">
+            <label for="imageUpload">Select Image:</label>
+            <input type="file" id="imageUpload" name="image" accept="image/*" required>
+            <button type="submit">Analyze Image</button>
+        </form>
+
+        <div class="footer">
+            Powered by Gemma/Phi-2 & pyttsx3 | Built for Inclusivity ❤️
+        </div>
+    </div>
+
+</body>
+</html>
