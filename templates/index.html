@@ -121,12 +121,43 @@
         <h1>AI Assistant for Accessibility</h1>
         <p>Upload an image to receive an audio description using our intelligent assistant.</p>
 
-        <form action="/upload" method="POST" enctype="multipart/form-data">
+        <form action="/" method="POST" enctype="multipart/form-data">
             <label for="imageUpload">Select Image:</label>
             <input type="file" id="imageUpload" name="image" accept="image/*" required>
             <button type="submit">Analyze Image</button>
         </form>
+        {% if response %}
+            <h3>Response:</h3>
+            <p>{{ response }}</p>
+            <audio controls>
+                <source src="{{ url_for('static', filename='response.mp3') }}" type="audio/mp3">
+                Your browser does not support the audio element.
+            </audio>
+        {% endif %}
+        {% if error %}
+            <p style="color: red;">{{ error }}</p>
+        {% endif %}
+        {% if success %}
+            <p style="color: green;">{{ success }}</p>
+        {% endif %}
 
+        {% if image_description %}
+            <h3>Image Description:</h3>
+            <p>{{ image_description }}</p>
+        {% endif %}
+        {% if audio_file %}
+            <h3>Audio Description:</h3>
+            <audio controls>
+                <source src="{{ url_for('static', filename=audio_file) }}" type="audio/mp3">
+                Your browser does not support the audio element.
+            </audio>
+        {% endif %}
+        {% if error_message %}
+            <p style="color: red;">{{ error_message }}</p>
+        {% endif %}
+        {% if success_message %}
+            <p style="color: green;">{{ success_message }}</p>
+        {% endif %}
         <div class="footer">
             Powered by Gemma/Phi-2 & pyttsx3 | Built for Inclusivity ❤️
         </div>
