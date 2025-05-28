@@ -28,7 +28,29 @@ PROMPT_TEMPLATES = [
 
 def generate_prompt(image_description: str):
     """
-    Combines image description and a randomly selected accessible prompt template.
+    Selects prompt templates based on keywords in the image description.
     """
-    selected_template = random.choice(PROMPT_TEMPLATES)
+    lower_desc = image_description.lower()
+    context_templates = []
+
+    if any(word in lower_desc for word in ["person", "people", "man", "woman", "child"]):
+        context_templates += [
+            "Describe the people and their actions in the image for a visually impaired user.",
+            "Explain what the people are doing and how they interact with the environment.",
+            "Summarize the appearance and activities of the individuals in the picture."
+        ]
+    if any(word in lower_desc for word in ["animal", "dog", "cat", "bird"]):
+        context_templates += [
+            "Describe the animals present and their behavior in the image.",
+            "Explain how the animals are interacting with their surroundings or people."
+        ]
+    if any(word in lower_desc for word in ["object", "car", "tree", "building", "food"]):
+        context_templates += [
+            "List and describe the main objects visible in the image.",
+            "Explain the arrangement and significance of the objects in the scene."
+        ]
+    if not context_templates:
+        context_templates = PROMPT_TEMPLATES  # fallback to generic templates
+
+    selected_template = random.choice(context_templates)
     return f"{selected_template}\n\nImage Description: {image_description}"

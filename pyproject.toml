@@ -4,27 +4,30 @@ version = "0.1.0"
 description = "AI assistant for disabled people using image input and audio response"
 authors = ["Subash Basnet <subash.basnet0123@gmail.com>", "Dipendra Shrestha"]
 readme = "README.md"
-packages = [{ include = "main" }]
+package-mode = false
 
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.13"
 flashtext = "^2.7"
 SpeechRecognition ="3.10.0"
-PTL = "^0.3.0"
+pytorch-lightning = "^2.2.1"
 transformers = "^4.41.2"
 
 nltk = "^3.9.1"
 python-docx = "^1.1.2"
 beautifulsoup4 = "^4.12.3"
 contractions = "^0.1.73"
-poetry = "^1.8.4"
 flask = "^3.1.0"
 torch = "^2.3.0"
 Pillow = "^10.3.0"
 flask-cors = "^4.0.0"
 gtts = "^2.5.1"
 opencv-python = "^4.9.0.80"
+tokenizers = ">=0.19,<0.20"
+numpy = "<2"
+accelerate = "^1.7.0"
+
 
 [build-system]
 requires = ["poetry-core"]
