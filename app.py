@@ -50,6 +50,13 @@ def upload():
             img_description = display_image_description(img)
             response_text = img_description
 
+            # Generate audio from the description and save it
+            audio_filename = 'response.mp3'
+            audio_path = os.path.join(app.config['UPLOAD_FOLDER'], audio_filename)
+            speak_text(response_text, audio_path)  # This should save the full response as audio
+            audio_file = f'uploads/{audio_filename}'
+            return render_template('index.html', response=response_text, audio_file=audio_file)
+
     return render_template('index.html', response=response_text)
 
 if __name__ == '__main__':

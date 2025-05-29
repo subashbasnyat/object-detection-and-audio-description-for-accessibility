@@ -129,10 +129,10 @@
         {% if response %}
             <h3>Response:</h3>
             <p>{{ response }}</p>
-            <audio controls>
+            <!-- <audio controls>
                 <source src="{{ url_for('static', filename='response.mp3') }}" type="audio/mp3">
                 Your browser does not support the audio element.
-            </audio>
+            </audio> -->
         {% endif %}
         {% if error %}
             <p style="color: red;">{{ error }}</p>
@@ -145,18 +145,18 @@
             <h3>Image Description:</h3>
             <p>{{ image_description }}</p>
         {% endif %}
-        {% if audio_file %}
-            <h3>Audio Description:</h3>
-            <audio controls>
-                <source src="{{ url_for('static', filename=audio_file) }}" type="audio/mp3">
-                Your browser does not support the audio element.
-            </audio>
-        {% endif %}
+        
         {% if error_message %}
             <p style="color: red;">{{ error_message }}</p>
         {% endif %}
         {% if success_message %}
             <p style="color: green;">{{ success_message }}</p>
+        {% endif %}
+        {% if audio_file %}
+            <audio controls>
+                <source src="{{ url_for('static', filename=audio_file) }}" type="audio/mp3">
+                Your browser does not support the audio element.
+            </audio>
         {% endif %}
         <div class="footer">
             Powered by Gemma/Phi-2 & pyttsx3 | Built for Inclusivity ❤️

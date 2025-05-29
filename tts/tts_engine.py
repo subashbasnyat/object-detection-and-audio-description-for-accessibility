@@ -4,7 +4,7 @@ Offline Text-to-Speech using pyttsx3
 import pyttsx3
 from config import TTS_RATE, TTS_VOICE
 
-def speak_text(text):
+def speak_text(text, output_path):
     engine = pyttsx3.init()
     engine.setProperty('rate', TTS_RATE)
     voices = engine.getProperty('voices')
@@ -16,5 +16,5 @@ def speak_text(text):
                 engine.setProperty('voice', voice.id)
                 break
 
-    engine.say(text)
+    engine.save_to_file(text, output_path)
     engine.runAndWait()
