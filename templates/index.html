@@ -158,6 +158,12 @@
                 Your browser does not support the audio element.
             </audio>
         {% endif %}
+        {% if boxed_image %}
+            <h3>Detected Objects Preview:</h3>
+            <img src="{{ url_for('static', filename='uploads/' + boxed_image) }}" alt="Detected Objects" style="max-width:100%; margin-top: 20px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+        {% endif %}
+
+
         <div class="footer">
             Powered by Gemma/Phi-2 & pyttsx3 | Built for Inclusivity ❤️
         </div>

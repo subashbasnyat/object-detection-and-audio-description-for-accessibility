@@ -6,6 +6,8 @@ from PIL import Image
 import os
 from transformers import BlipProcessor, BlipForConditionalGeneration
 import torch
+from ultralytics import YOLO
+import cv2 
 
 # Load BLIP model and processor once (global, so it's not reloaded every call)
 blip_processor = BlipProcessor.from_pretrained("Salesforce/blip-image-captioning-base")

@@ -29,11 +29,14 @@ from image_processing.image_processor import load_image, image_to_description, d
 from prompts.prompt_templates import generate_prompt
 import os
 from PIL import Image
+from image_processing.image_processor import yolov8_object_detection
+
+
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 
-# Load model once when app starts
+    # Load model once when app starts
 tokenizer, model = load_model()
 
 @app.route('/', methods=['GET', 'POST'])
@@ -46,6 +49,10 @@ def upload():
         if image:
             image_path = os.path.join(app.config['UPLOAD_FOLDER'], image.filename)
             image.save(image_path)
+
+            detected_objects = yolov8_object_detection(image_path)
+            response_text = img_description + " | " + detected_objects
+
             img = load_image(image_path)
             img_description = display_image_description(img)
             response_text = img_description
@@ -55,9 +62,13 @@ def upload():
             audio_path = os.path.join(app.config['UPLOAD_FOLDER'], audio_filename)
             speak_text(response_text, audio_path)  # This should save the full response as audio
             audio_file = f'uploads/{audio_filename}'
-            return render_template('index.html', response=response_text, audio_file=audio_file)
 
-    return render_template('index.html', response=response_text)
+            # To get the YOLO boxed image filename
+            boxed_image = image.filename.replace(".jpg", "_yolo.jpg").replace(".png", "_yolo.png")
+            
+            return render_template('index.html',response=response_text,audio_file=audio_file,boxed_image=boxed_image)
+
+    return render_template('index.html', response=response_text,boxed_image=boxed_image)
 
 if __name__ == '__main__':
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
