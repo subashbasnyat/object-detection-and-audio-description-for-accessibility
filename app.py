@@ -5,6 +5,7 @@ from image_processing.image_processor import load_image, image_to_description, d
 from prompts.prompt_templates import generate_prompt
 import os
 from PIL import Image
+import time
 import cv2
 
 app = Flask(__name__)
@@ -16,7 +17,7 @@ tokenizer, model = load_model()
 @app.route('/', methods=['GET', 'POST'])
 def upload():
     response_text = ""
-    image_path = None
+    audio_file = None
 
     if request.method == 'POST':
         image = request.files.get('image')
@@ -27,12 +28,13 @@ def upload():
             img_description = display_image_description(img)
             response_text = img_description
 
-            # Generate audio from the description and save it
-            audio_filename = 'response.mp3'
+            # Generate a unique filename for each audio
+            audio_filename = f'response_{int(time.time())}.mp3'
             audio_path = os.path.join(app.config['UPLOAD_FOLDER'], audio_filename)
-            speak_text(response_text, audio_path)  # This should save the full response as audio
+            speak_text(response_text, audio_path)
             audio_file = f'uploads/{audio_filename}'
-            return render_template('index.html', response=response_text, audio_file=audio_file)
+
+    return render_template('index.html', response=response_text, audio_file=audio_file)
 
     return render_template('index.html', response=response_text)
 
