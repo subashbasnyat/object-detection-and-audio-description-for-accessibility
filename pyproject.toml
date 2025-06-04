@@ -27,6 +27,8 @@ opencv-python = "^4.9.0.80"
 tokenizers = ">=0.19,<0.20"
 numpy = "<2"
 accelerate = "^1.7.0"
+pyttsx3 = "^2.98"
+ultralytics = "^8.3.146"
 
 
 [build-system]

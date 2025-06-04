@@ -1,34 +1,11 @@
-# from flask import Flask, render_template, request
-# from image_processing.image_processor import save_image, process_image
-# from utils.audio_handler import text_to_speech
-# from llm.model_loader import query_model, load_model
-# from tts.tts_engine import speak_text
-
-# app = Flask(__name__)
-
-# @app.route('/', methods=['GET', 'POST'])
-# def index():
-#     response = None
-#     if request.method == 'POST':
-#         image = request.files['image']
-#         if image:
-#             path = save_image(image)
-#             img_description = process_image(path)
-#             llm_output = query_model(f"Describe this: {img_description}")
-#             audio_path = text_to_speech(llm_output, 'static/response.mp3')
-#             response = llm_output
-#     return render_template('index.html', response=response)
-
-# if __name__ == '__main__':
-#     app.run(debug=True)
-
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, Response
 from llm.model_loader import load_model, query_model
 from tts.tts_engine import speak_text
 from image_processing.image_processor import load_image, image_to_description, display_image_description
 from prompts.prompt_templates import generate_prompt
 import os
 from PIL import Image
+import cv2
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
@@ -58,6 +35,36 @@ def upload():
             return render_template('index.html', response=response_text, audio_file=audio_file)
 
     return render_template('index.html', response=response_text)
+
+# ----------- CAMERA FEED ROUTE -----------
+def generate_frames():
+    cap = cv2.VideoCapture(0)  # 0 for default USB webcam
+
+    while True:
+        success, frame = cap.read()
+        if not success:
+            break
+
+        # Example: run object detection on each frame (use your detection logic here)
+        detected_objects = display_image_description(frame)
+
+        # Optional: display detected object labels on frame
+        for i, obj in enumerate(detected_objects.split(', ')):
+            cv2.putText(frame, obj, (10, 30 + i * 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+
+        # Encode frame as JPEG
+        ret, buffer = cv2.imencode('.jpg', frame)
+        frame = buffer.tobytes()
+
+        # Yield frame in streaming format
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+
+    cap.release()
+
+@app.route('/camera')
+def camera():
+    return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 if __name__ == '__main__':
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)

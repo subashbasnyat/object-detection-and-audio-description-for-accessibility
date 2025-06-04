@@ -5,4 +5,5 @@ Pillow
 SpeechRecognition
 gTTS
 pydub
-
+pyttsx3
+ultralytics
