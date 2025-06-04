@@ -1,23 +1,3 @@
-<!-- <!doctype html>
-<html lang="en">
-  <head>
-    <title>AI Assistant</title>
-  </head>
-  <body>
-    <h2>Upload your image</h2>
-    <form action="/" method="post" enctype="multipart/form-data">
-      <input type="file" name="image"><br><br>
-      <input type="submit" value="Submit">
-    </form>
-    {% if response %}
-      <h3>Response:</h3>
-      <p>{{ response }}</p>
-      <audio controls>
-        <source src="{{ url_for('static', filename='response.mp3') }}" type="audio/mp3">
-      </audio>
-    {% endif %}
-  </body>
-</html> -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -92,10 +72,16 @@
             font-size: 1rem;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            margin: 0 5px;
         }
 
-        button:hover {
+        button:hover:not(:disabled) {
             background-color: #004d40;
+        }
+
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
         }
 
         .footer {
@@ -117,51 +103,86 @@
 </head>
 <body>
 
-    <div class="container">
-        <h1>AI Assistant for Accessibility</h1>
-        <p>Upload an image to receive an audio description using our intelligent assistant.</p>
+<div class="container">
+    <h1>AI Assistant for Accessibility</h1>
+    <p>Upload an image to receive an audio description using our intelligent assistant.</p>
 
-        <form action="/" method="POST" enctype="multipart/form-data">
-            <label for="imageUpload">Select Image:</label>
-            <input type="file" id="imageUpload" name="image" accept="image/*" required>
-            <button type="submit">Analyze Image</button>
-        </form>
-        {% if response %}
-            <h3>Response:</h3>
-            <p>{{ response }}</p>
-            <!-- <audio controls>
-                <source src="{{ url_for('static', filename='response.mp3') }}" type="audio/mp3">
-                Your browser does not support the audio element.
-            </audio> -->
-        {% endif %}
-        {% if error %}
-            <p style="color: red;">{{ error }}</p>
-        {% endif %}
-        {% if success %}
-            <p style="color: green;">{{ success }}</p>
-        {% endif %}
+    <form action="/" method="POST" enctype="multipart/form-data">
+        <label for="imageUpload">Select Image:</label>
+        <input type="file" id="imageUpload" name="image" accept="image/*" required>
+        <button type="submit">Analyze Image</button>
+    </form>
 
-        {% if image_description %}
-            <h3>Image Description:</h3>
-            <p>{{ image_description }}</p>
-        {% endif %}
-        
-        {% if error_message %}
-            <p style="color: red;">{{ error_message }}</p>
-        {% endif %}
-        {% if success_message %}
-            <p style="color: green;">{{ success_message }}</p>
-        {% endif %}
-        {% if audio_file %}
-            <audio controls>
-                <source src="{{ url_for('static', filename=audio_file) }}" type="audio/mp3">
-                Your browser does not support the audio element.
-            </audio>
-        {% endif %}
-        <div class="footer">
-            Powered by Gemma/Phi-2 & pyttsx3 | Built for Inclusivity ❤️
-        </div>
+    {% if response %}
+        <h3>Response:</h3>
+        <p>{{ response }}</p>
+    {% endif %}
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+    {% if success %}
+        <p style="color: green;">{{ success }}</p>
+    {% endif %}
+
+    {% if image_description %}
+        <h3>Image Description:</h3>
+        <p>{{ image_description }}</p>
+    {% endif %}
+    
+    {% if error_message %}
+        <p style="color: red;">{{ error_message }}</p>
+    {% endif %}
+    {% if success_message %}
+        <p style="color: green;">{{ success_message }}</p>
+    {% endif %}
+    
+    {% if audio_file %}
+        <audio controls>
+            <source src="{{ url_for('static', filename=audio_file) }}" type="audio/mp3">
+            Your browser does not support the audio element.
+        </audio>
+    {% endif %}
+
+    <hr style="margin: 30px 0;">
+
+    <h3>Live Camera Stream</h3>
+
+    <img id="camera-stream" width="100%" height="auto" style="display:none; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);" />
+
+    <div style="margin-top: 15px;">
+        <button id="start-camera">Start Camera</button>
+        <button id="stop-camera" disabled>Stop Camera</button>
     </div>
+
+    <div class="footer">
+        Powered by Gemma/Phi-2 & pyttsx3 | Built for Inclusivity ❤️
+    </div>
+</div>
+
+<script>
+    const img = document.getElementById('camera-stream');
+    const startBtn = document.getElementById('start-camera');
+    const stopBtn = document.getElementById('stop-camera');
+
+    // Start camera stream by setting video source to Flask streaming route
+    function startCamera() {
+        img.style.display = 'block';
+        startBtn.disabled = true;
+        stopBtn.disabled = false;
+        img.src = "/camera";
+    }
+
+    // Stop camera stream by clearing video source and hiding video element
+    function stopCamera() {
+        img.src = "";
+        img.style.display = 'none';
+        startBtn.disabled = false;
+        stopBtn.disabled = true;
+    }
+
+    startBtn.addEventListener('click', startCamera);
+    stopBtn.addEventListener('click', stopCamera);
+</script>
 
 </body>
 </html>
