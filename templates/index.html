@@ -72,10 +72,16 @@
             font-size: 1rem;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            margin: 0 5px;
         }
 
-        button:hover {
+        button:hover:not(:disabled) {
             background-color: #004d40;
+        }
+
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
         }
 
         .footer {
@@ -113,9 +119,9 @@
 </head>
 <body>
 
-    <div class="container">
-        <h1>AI Assistant for Accessibility</h1>
-        <p>Upload an image to receive an audio description using our intelligent assistant.</p>
+<div class="container">
+    <h1>AI Assistant for Accessibility</h1>
+    <p>Upload an image to receive an audio description using our intelligent assistant.</p>
 
         <form action="/" method="POST" enctype="multipart/form-data">
             <label for="imageUpload">Select Image:</label>
@@ -123,16 +129,12 @@
             <button type="submit" id="analyze-btn">
                 Analyze Image
                 <span id="spinner" class="spinner" style="display:none; margin-left:8px;"></span>
-
             </button>
         </form>
         {% if response %}
             <h3>Response:</h3>
             <p>{{ response }}</p>
-            <!-- <audio controls>
-                <source src="{{ url_for('static', filename='response.mp3') }}" type="audio/mp3">
-                Your browser does not support the audio element.
-            </audio> -->
+            
         {% endif %}
         {% if error %}
             <p style="color: red;">{{ error }}</p>
@@ -158,11 +160,46 @@
                 Your browser does not support the audio element.
             </audio>
         {% endif %}
+
+        <hr style="margin: 30px 0;">
+
+        <h3>Live Camera Stream</h3>
+
+        <img id="camera-stream" width="100%" height="auto" style="display:none; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);" />
+
+        <div style="margin-top: 15px;">
+            <button id="start-camera">Start Camera</button>
+            <button id="stop-camera" disabled>Stop Camera</button>
+        </div>
+        
         <div class="footer">
             © 2025 Himalayan Encoders. All Rights Reserved. | Built for Inclusivity ❤️
         </div>
     </div>
-    
-<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script>
+        const img = document.getElementById('camera-stream');
+        const startBtn = document.getElementById('start-camera');
+        const stopBtn = document.getElementById('stop-camera');
+
+        // Start camera stream by setting video source to Flask streaming route
+        function startCamera() {
+            img.style.display = 'block';
+            startBtn.disabled = true;
+            stopBtn.disabled = false;
+            img.src = "/camera";
+        }
+
+        // Stop camera stream by clearing video source and hiding video element
+        function stopCamera() {
+            img.src = "";
+            img.style.display = 'none';
+            startBtn.disabled = false;
+            stopBtn.disabled = true;
+        }
+
+        startBtn.addEventListener('click', startCamera);
+        stopBtn.addEventListener('click', stopCamera);
+    </script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>
