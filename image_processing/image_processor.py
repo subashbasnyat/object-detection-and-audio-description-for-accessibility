@@ -6,6 +6,7 @@ from PIL import Image
 import os
 from transformers import BlipProcessor, BlipForConditionalGeneration
 import torch
+from tts.image_preprocessing import preprocess_pil_image
 
 # Load BLIP model and processor once (global, so it's not reloaded every call)
 blip_processor = BlipProcessor.from_pretrained("Salesforce/blip-image-captioning-base")
@@ -23,8 +24,12 @@ def load_image(image_path):
 def image_to_description(image):
     """
     Uses BLIP to generate a description of the image content.
+    Applies white balance correction preprocessing to improve results.
     """
-    inputs = blip_processor(image, return_tensors="pt")
+    # Preprocess image for color correction
+    preprocessed_image = preprocess_pil_image(image)
+
+    inputs = blip_processor(preprocessed_image, return_tensors="pt")
     with torch.no_grad():
         out = blip_model.generate(**inputs)
     description = blip_processor.decode(out[0], skip_special_tokens=True)
