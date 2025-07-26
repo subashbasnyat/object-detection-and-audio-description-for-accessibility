@@ -26,6 +26,8 @@ def query_model(tokenizer, model, img_description):
             **inputs,
             max_new_tokens=200,
             temperature=0.8,
-            top_p=0.95
+            top_p=0.95,
+            repetition_penalty=1.2,  # Try values between 1.1 and 1.5
+            no_repeat_ngram_size=2   # Prevents repeating 3-word sequences
         )
     return tokenizer.decode(output[0], skip_special_tokens=True)
